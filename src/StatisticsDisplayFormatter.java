@@ -69,8 +69,8 @@ class StatisticsDisplayFormatter {
         System.out.printf("| 🌿 Self Care      | 30 min/day            | %d min            |  %d%%  |\n",
                 wellnessGoals.getSelfCareTime(), calculatePercentage(wellnessGoals.getSelfCareTime(), 30));
 
-        System.out.printf("| 📱 Screen Time    | 2 hours max/day       | %d hours              | %d%%  | \n",
-                wellnessGoals.getScreenTime(), calculatePercentage(wellnessGoals.getScreenTime(), 2));
+        System.out.printf("| 📱 Screen Time    | 2 hours max/day       | %d hours              | %s  | \n",
+                wellnessGoals.getScreenTime(), screenTimeCalculation(wellnessGoals.getScreenTime(), 2));
 
         System.out.println("-------------------------------------------------------------");
     }
@@ -96,7 +96,21 @@ class StatisticsDisplayFormatter {
         System.out.printf("🥗 \u001B[33m**Total Meals Logged**\u001B[0m: %d\n", totalMealsLogged);
     }
 
-    private int calculatePercentage(int value, int total) {
-        return total == 0 ? 0 : (value * 100 / total);
+    private static int calculatePercentage(int value, int total) {
+        if (total == 0) return 0;
+        int percentage = value * 100 / total;
+        return Math.min(percentage, 100);
+    }
+
+    private String screenTimeCalculation(int value, int total) {
+        String message;
+        if (value > total) {
+            message=value-total+" hour over limit";
+        }
+        else
+        {
+            message="Within limit";
+        }
+        return message;
     }
 }

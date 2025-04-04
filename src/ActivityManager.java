@@ -178,17 +178,17 @@ class ActivityManager {
                         if (value <= recommendedValues[index]) {
                             uiManager.showSuccessMessage("Great job keeping screen time low!");
                         } else if (value <= recommendedValues[index] * 1.5) {
-                            uiManager.displayText("Try to reduce screen time when possible.");
+                            uiManager.showErrorMessage("Try to reduce screen time when possible.");
                         } else {
-                            uiManager.displayText("Consider setting limits on screen usage.");
+                            uiManager.showErrorMessage("Consider setting limits on screen usage.");
                         }
                     } else { // For other metrics (higher is better)
                         if (value >= recommendedValues[index]) {
                             uiManager.showSuccessMessage("Excellent progress on your " + goalNames[index] + "!");
                         } else if (value >= recommendedValues[index] * 0.7) {
-                            uiManager.displayText("Good effort! Keep working toward your goal.");
+                            uiManager.showSuccessMessage("Good effort! Keep working toward your goal.");
                         } else {
-                            uiManager.displayText("Try to increase this value tomorrow.");
+                            uiManager.showErrorMessage("Try to increase this value tomorrow.");
                         }
                     }
                 } catch (NumberFormatException e) {
