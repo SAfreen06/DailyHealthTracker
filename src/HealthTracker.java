@@ -2,7 +2,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 
-
+/**
+ * Manages user's health activities and wellness goals
+ */
 class HealthTracker {
     private List<Activity> activities;
     private WellnessGoals wellnessGoals;
@@ -32,10 +34,9 @@ class HealthTracker {
         ActivityDisplayFormatter.displayDetailedActivities(activities);
     }
 
-    public void completeActivity(int index) {
+    public boolean completeActivity(int index) {
         if (!isValidActivityIndex(index)) {
-            System.out.println("Invalid activity index.");
-            return;
+            return false;
         }
 
         Activity activity = activities.get(index);
@@ -46,30 +47,32 @@ class HealthTracker {
         if (!wasAlreadyCompleted) {
             streakManager.recordActivity(activity.getCategory());
         }
+
+        return true;
     }
 
-    public void deleteActivity(int index) {
+    public boolean deleteActivity(int index) {
         if (isValidActivityIndex(index)) {
             activities.remove(index);
-        } else {
-            System.out.println("Invalid activity index.");
+            return true;
         }
+        return false;
     }
 
-    public void editActivityName(int index, String newName) {
+    public boolean editActivityName(int index, String newName) {
         if (isValidActivityIndex(index)) {
             activities.get(index).setName(newName);
-        } else {
-            System.out.println("Invalid activity index.");
+            return true;
         }
+        return false;
     }
 
-    public void editActivityDescription(int index, String newDescription) {
+    public boolean editActivityDescription(int index, String newDescription) {
         if (isValidActivityIndex(index)) {
             activities.get(index).setDescription(newDescription);
-        } else {
-            System.out.println("Invalid activity index.");
+            return true;
         }
+        return false;
     }
 
     public String getActivityName(int index) {
@@ -79,8 +82,12 @@ class HealthTracker {
         return "";
     }
 
-    private boolean isValidActivityIndex(int index) {
+    public boolean isValidActivityIndex(int index) {
         return index >= 0 && index < activities.size();
+    }
+
+    public int getActivityCount() {
+        return activities.size();
     }
 
     public WellnessGoals getWellnessGoals() {
@@ -109,7 +116,7 @@ class HealthTracker {
         formatter.displayCompleteStatistics();
     }
 
- 
+    // Streak-related methods
     public void addStreakCategory(String category) {
         streakManager.addCategory(category);
     }
