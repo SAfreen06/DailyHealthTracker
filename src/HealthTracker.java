@@ -1,6 +1,6 @@
 import java.util.List;
 import java.util.ArrayList;
-import java.time.LocalDate;
+import java.util.Map;
 
 class HealthTracker {
     private List<Activity> activities;
@@ -8,20 +8,21 @@ class HealthTracker {
     private int exerciseGoal;
     private int meditationGoal;
     private int nutritionGoal;
-    private StreakManager streakManager;  // New field for streak management
+    private StreakManager streakManager;
 
     public HealthTracker() {
         activities = new ArrayList<>();
         wellnessGoals = new WellnessGoals();
-        streakManager = new StreakManager();  // Initialize streak manager
+        streakManager = new StreakManager();
 
-        // Check streaks against current date (handles streak resets if days were missed)
+
         streakManager.checkAllStreaks();
 
         // Default goals
         exerciseGoal = 45;
         meditationGoal = 15;
         nutritionGoal = 1800;
+
     }
 
     public void addActivity(Activity activity) {
@@ -60,32 +61,53 @@ class HealthTracker {
     }
 
     public void completeActivity(int index) {
+        if (index < 0 || index >= activities.size()) {
+            System.out.println("Invalid activity index.");
+            return;
+        }
+
         Activity activity = activities.get(index);
         boolean wasAlreadyCompleted = activity.isCompleted();
 
         activity.complete();
 
-        // Only update streak if this is the first time completing this activity today
+
         if (!wasAlreadyCompleted) {
-            // Update streak for the activity's category
-            streakManager.recordActivity(activity.getCategory(), LocalDate.now());
+
+            streakManager.recordActivity(activity.getCategory());
+
         }
     }
 
     public void deleteActivity(int index) {
-        activities.remove(index);
+        if (index >= 0 && index < activities.size()) {
+            activities.remove(index);
+        } else {
+            System.out.println("Invalid activity index.");
+        }
     }
 
     public void editActivityName(int index, String newName) {
-        activities.get(index).setName(newName);
+        if (index >= 0 && index < activities.size()) {
+            activities.get(index).setName(newName);
+        } else {
+            System.out.println("Invalid activity index.");
+        }
     }
 
     public void editActivityDescription(int index, String newDescription) {
-        activities.get(index).setDescription(newDescription);
+        if (index >= 0 && index < activities.size()) {
+            activities.get(index).setDescription(newDescription);
+        } else {
+            System.out.println("Invalid activity index.");
+        }
     }
 
     public String getActivityName(int index) {
-        return activities.get(index).getName();
+        if (index >= 0 && index < activities.size()) {
+            return activities.get(index).getName();
+        }
+        return "";
     }
 
     public WellnessGoals getWellnessGoals() {
@@ -118,7 +140,7 @@ class HealthTracker {
 
         // Calculate meditation progress
         int meditationProgress = calculateCategoryProgress("Meditation", meditationGoal);
-        System.out.printf("| 🧘 Meditation | %d min/day            |  %d min            | %d%%  | \n",
+        System.out.printf("| 🧘 Meditation | %d min/day            |  %d min            |  %d%%  | \n",
                 meditationGoal, meditationProgress, (meditationProgress * 100 / meditationGoal));
 
         // Calculate nutrition progress
@@ -143,13 +165,13 @@ class HealthTracker {
         System.out.println("| Wellness Goal     | Goal                  | Achieved     |Progress   | ");
         System.out.println("-------------------------------------------------------------");
 
-        System.out.printf("| 💧 Water Intake   | 8 glasses/day         | %d glasses  | %d%%  |  \n",
+        System.out.printf("| 💧 Water Intake   | 8 glasses/day         | %d glasses  |  %d%%  |  \n",
                 wellnessGoals.getWaterIntake(), (wellnessGoals.getWaterIntake() * 100 / 8));
 
-        System.out.printf("| 😴 Sleep Duration | 8 hours/night         | %d hours            | %d%%  |\n",
+        System.out.printf("| 😴 Sleep Duration | 8 hours/night         | %d hours            |  %d%%  |\n",
                 wellnessGoals.getSleepDuration(), (wellnessGoals.getSleepDuration() * 100 / 8));
 
-        System.out.printf("| 🌿 Self Care      | 30 min/day            | %d min            | %d%%  |\n",
+        System.out.printf("| 🌿 Self Care      | 30 min/day            | %d min            |  %d%%  |\n",
                 wellnessGoals.getSelfCareTime(), (wellnessGoals.getSelfCareTime() * 100 / 30));
 
         System.out.printf("| 📱 Screen Time    | 2 hours max/day       | %d hours              | %d%%  | \n",
@@ -159,10 +181,15 @@ class HealthTracker {
     }
 
     private void displayStreaksAndStats() {
-        System.out.println("\n🔥 **Best Streaks**");
+        System.out.println("\n🔥 **Current Streaks**");
         System.out.println("   🏋️ Exercise: " + streakManager.getCurrentStreak("Exercise") + " Days");
         System.out.println("   🧘 Meditation: " + streakManager.getCurrentStreak("Meditation") + " Days");
         System.out.println("   🍽️ Nutrition: " + streakManager.getCurrentStreak("Nutrition") + " Days");
+
+        System.out.println("\n🏆 **Best Streaks**");
+        System.out.println("   🏋️ Exercise: " + streakManager.getBestStreak("Exercise") + " Days");
+        System.out.println("   🧘 Meditation: " + streakManager.getBestStreak("Meditation") + " Days");
+        System.out.println("   🍽️ Nutrition: " + streakManager.getBestStreak("Nutrition") + " Days");
 
         // Calculate total stats
         int totalCaloriesBurned = calculateTotalCaloriesBurned();
@@ -202,12 +229,27 @@ class HealthTracker {
                 .sum();
     }
 
-    // New method to get current streak info for a category
+
+    public void addStreakCategory(String category) {
+        streakManager.addCategory(category);
+    }
+
+
+    public boolean removeStreakCategory(String category) {
+        return streakManager.removeCategory(category);
+    }
+
+
+    public Map<String, Streak> getAllStreakCategories() {
+        return streakManager.getAllStreaks();
+    }
+
+
     public int getCurrentStreak(String category) {
         return streakManager.getCurrentStreak(category);
     }
 
-    // New method to get best streak info for a category
+
     public int getBestStreak(String category) {
         return streakManager.getBestStreak(category);
     }
