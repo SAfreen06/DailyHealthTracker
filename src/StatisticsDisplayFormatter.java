@@ -1,7 +1,6 @@
 import java.util.List;
 
 class StatisticsDisplayFormatter {
-
     private WellnessGoals wellnessGoals;
     private ActivityGoals activityGoals;
     private StreakManager streakManager;
@@ -19,17 +18,17 @@ class StatisticsDisplayFormatter {
     }
 
     public void displayCompleteStatistics() {
-        System.out.println("============ 🏆 Health Tracker - Daily Statistics 🏆 ============");
+        System.out.println("\u001B[33m============ 🏆 Health Tracker - Daily Statistics 🏆 ============\u001B[0m");
 
         displayActivityProgress();
         displayWellnessGoalsProgress();
         displayStreaksAndStats();
 
-        System.out.println("==================================================");
+        System.out.println("\u001B[33m==================================================\u001B[0m");
     }
 
     private void displayActivityProgress() {
-        System.out.println("\n **Physical & Mental Activity Progress**");
+        System.out.println("\n📌\u001B[33m**Physical & Mental Activity Progress**\u001B[0m");
         System.out.println("-------------------------------------------------------------");
         System.out.println("| Category      | Goal                  | Achieved |  Progress   ");
         System.out.println("-------------------------------------------------------------");
@@ -56,7 +55,7 @@ class StatisticsDisplayFormatter {
     }
 
     private void displayWellnessGoalsProgress() {
-        System.out.println("\n📌**Daily Wellness Goals Progress**");
+        System.out.println("\n📌\u001B[33m**Daily Wellness Goals Progress**\u001B[0m");
         System.out.println("-------------------------------------------------------------");
         System.out.println("| Wellness Goal     | Goal                  | Achieved     |Progress   | ");
         System.out.println("-------------------------------------------------------------");
@@ -77,12 +76,12 @@ class StatisticsDisplayFormatter {
     }
 
     private void displayStreaksAndStats() {
-        System.out.println("\n🔥 **Current Streaks**");
+        System.out.println("\n🔥 \u001B[33m**Current Streaks**\u001B[0m");
         System.out.println("   🏋️ Exercise: " + streakManager.getCurrentStreak("Exercise") + " Days");
         System.out.println("   🧘 Meditation: " + streakManager.getCurrentStreak("Meditation") + " Days");
         System.out.println("   🍽️ Nutrition: " + streakManager.getCurrentStreak("Nutrition") + " Days");
 
-        System.out.println("\n🏆 **Best Streaks**");
+        System.out.println("\n🏆 \u001B[33m**Best Streaks**\u001B[0m");
         System.out.println("   🏋️ Exercise: " + streakManager.getBestStreak("Exercise") + " Days");
         System.out.println("   🧘 Meditation: " + streakManager.getBestStreak("Meditation") + " Days");
         System.out.println("   🍽️ Nutrition: " + streakManager.getBestStreak("Nutrition") + " Days");
@@ -92,13 +91,12 @@ class StatisticsDisplayFormatter {
         int totalMeditationMinutes = statsCalculator.calculateTotalMeditationMinutes();
         int totalMealsLogged = statsCalculator.calculateTotalMealsLogged();
 
-        System.out.printf("\n📊 **Calories Burned This Week**: %d kcal\n", totalCaloriesBurned);
-        System.out.printf("📆 **Total Meditation Minutes**: %d min\n", totalMeditationMinutes);
-        System.out.printf("🥗 **Total Meals Logged**: %d\n", totalMealsLogged);
+        System.out.printf("\n📊\u001B[33m**Calories Burned This Week**\u001B[0m: %d kcal\n", totalCaloriesBurned);
+        System.out.printf("📆 \u001B[33m**Total Meditation Minutes**\u001B[0m: %d min\n", totalMeditationMinutes);
+        System.out.printf("🥗 \u001B[33m**Total Meals Logged**\u001B[0m: %d\n", totalMealsLogged);
     }
 
     private int calculatePercentage(int value, int total) {
         return total == 0 ? 0 : (value * 100 / total);
     }
 }
-
