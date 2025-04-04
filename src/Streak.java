@@ -24,12 +24,15 @@ class Streak {
         if (lastCompletedDate == null) {
             currentStreak = 1;
             lastCompletedDate = activityDate;
+            updateBestStreak();
+
         } else if (activityDate.equals(lastCompletedDate)) {
             return;
         } else if (activityDate.equals(lastCompletedDate.plusDays(1))) {
             currentStreak++;
             lastCompletedDate = activityDate;
             updateBestStreak();
+
         } else if (activityDate.isAfter(lastCompletedDate.plusDays(1))) {
             currentStreak = 1;
             lastCompletedDate = activityDate;

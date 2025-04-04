@@ -2,9 +2,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 
-/**
- * Manages user's health activities and wellness goals
- */
+
 class HealthTracker {
     private List<Activity> activities;
     private WellnessGoals wellnessGoals;
@@ -116,7 +114,7 @@ class HealthTracker {
         formatter.displayCompleteStatistics();
     }
 
-    // Streak-related methods
+
     public void addStreakCategory(String category) {
         streakManager.addCategory(category);
     }
