@@ -4,7 +4,7 @@ class WellnessGoals {
     private int selfCareTime;
     private int screenTime;
 
-    public void displayGoals() {
+/*    public void displayGoals() {
         System.out.println("-------------------------------------------------");
         System.out.println("| #  | Activity Name    | Goal               | Intake/Duration |");
         System.out.println("-------------------------------------------------");
@@ -13,7 +13,7 @@ class WellnessGoals {
         System.out.println("| 3  | Self Care       | 30 minutes         | _ _             |");
         System.out.println("| 4  | Screen Time     | 2 hours or less    | _ _             |");
         System.out.println("-------------------------------------------------");
-    }
+    }*/
 
 
     public void setWaterIntake(int waterIntake) { this.waterIntake = waterIntake; }

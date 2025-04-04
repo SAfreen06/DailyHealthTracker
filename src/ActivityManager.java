@@ -1,6 +1,5 @@
 import java.util.Scanner;
 
-
 class ActivityManager {
     private final Scanner scanner;
     private final HealthTracker healthTracker;
@@ -106,41 +105,123 @@ class ActivityManager {
 
     private void logDailyWellnessGoals() {
         WellnessGoals goals = healthTracker.getWellnessGoals();
-        goals.displayGoals();
+        uiManager.displayPrompt("--- 🌈 Log Your Daily Wellness Goals ---\n");
 
-        while (true) {
+        // Display current values first
+        uiManager.displayText("Current Wellness Goals:");
+
+
+        String[] goalNames = {"Water Intake", "Sleep Duration", "Self-Care Time", "Screen Time"};
+        String[] goalIcons = {"💧", "😴", "🌿", "📱"};
+        String[] goalUnits = {"glasses", "hours", "minutes", "hours"};
+        String[] goalTips = {
+                "Health tip: Aim for 8 glasses (2L) of water daily for proper hydration",
+                "Health tip: 7-9 hours is recommended for adults for optimal rest",
+                "Health tip: Even 10-15 minutes of self-care daily can reduce stress",
+                "Health tip: Try to limit recreational screen time to 2 hours per day"
+        };
+        int[] recommendedValues = {8, 8, 30, 2};
+        int[] minValues = {0, 0, 0, 0};
+        int[] maxValues = {20, 24, 180, 24};
+
+        boolean continueLogging = true;
+
+        while (continueLogging) {
+            uiManager.displayPrompt("\nSelect a wellness goal to update:\n");
+            for (int i = 0; i < goalNames.length; i++) {
+                uiManager.displayText((i+1) + ". " + goalIcons[i] + " " + goalNames[i] +
+                        " (Current: " + getCurrentValue(goals, i) + " " + goalUnits[i] + ")");
+            }
+            uiManager.displayText("0. ✅ Save and Return");
+
             try {
-                uiManager.displayPrompt("Choose an activity to log progress (Enter #, or 0 to finish): ");
-                int goalIndex = Integer.parseInt(scanner.nextLine());
+                uiManager.displayPrompt("➤ Your choice: ");
+                int choice = Integer.parseInt(scanner.nextLine());
 
-                if (goalIndex == 0) break;
+                if (choice == 0) {
+                    continueLogging = false;
+                    continue;
+                }
 
-                switch (goalIndex) {
-                    case 1:
-                        uiManager.displayPrompt("Enter the number of glasses of water you drank today: ");
-                        goals.setWaterIntake(Integer.parseInt(scanner.nextLine()));
-                        break;
-                    case 2:
-                        uiManager.displayPrompt("Enter the number of hours you slept today: ");
-                        goals.setSleepDuration(Integer.parseInt(scanner.nextLine()));
-                        break;
-                    case 3:
-                        uiManager.displayPrompt("Enter the number of minutes of self-care today: ");
-                        goals.setSelfCareTime(Integer.parseInt(scanner.nextLine()));
-                        break;
-                    case 4:
-                        uiManager.displayPrompt("Enter the time spent on screens today (hours): ");
-                        goals.setScreenTime(Integer.parseInt(scanner.nextLine()));
-                        break;
-                    default:
-                        uiManager.showErrorMessage("Invalid goal.");
+                if (choice < 1 || choice > goalNames.length) {
+                    uiManager.showErrorMessage("Invalid choice. Please try again.");
+                    continue;
+                }
+
+                int index = choice - 1;
+                uiManager.displayText(goalTips[index]);
+                uiManager.displayPrompt("Enter " + goalNames[index] + " (" + goalUnits[index] +
+                        ", recommended: " + recommendedValues[index] + "): ");
+
+                String input = scanner.nextLine();
+
+                // Check if input is empty (user just pressed enter)
+                if (input.trim().isEmpty()) {
+                    uiManager.displayText("No change made.");
+                    continue;
+                }
+
+                try {
+                    int value = Integer.parseInt(input);
+
+                    // Validate input range
+                    if (value < minValues[index] || value > maxValues[index]) {
+                        uiManager.showErrorMessage("Value must be between " + minValues[index] +
+                                " and " + maxValues[index] + ". Please try again.");
+                        continue;
+                    }
+
+                    // Update the appropriate goal
+                    updateWellnessGoal(goals, index, value);
+
+                    // Show feedback based on the value compared to recommended
+                    if (index == 3) { // Screen time (lower is better)
+                        if (value <= recommendedValues[index]) {
+                            uiManager.showSuccessMessage("Great job keeping screen time low!");
+                        } else if (value <= recommendedValues[index] * 1.5) {
+                            uiManager.displayText("Try to reduce screen time when possible.");
+                        } else {
+                            uiManager.displayText("Consider setting limits on screen usage.");
+                        }
+                    } else { // For other metrics (higher is better)
+                        if (value >= recommendedValues[index]) {
+                            uiManager.showSuccessMessage("Excellent progress on your " + goalNames[index] + "!");
+                        } else if (value >= recommendedValues[index] * 0.7) {
+                            uiManager.displayText("Good effort! Keep working toward your goal.");
+                        } else {
+                            uiManager.displayText("Try to increase this value tomorrow.");
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    uiManager.showErrorMessage("Please enter a valid number.");
                 }
             } catch (NumberFormatException e) {
                 uiManager.showErrorMessage("Please enter a valid number.");
             }
         }
-        uiManager.showSuccessMessage("Daily wellness goals updated!");
-        waitForUserToContinue();
+
+        uiManager.showSuccessMessage("Wellness goals updated successfully!");
+    }
+
+    // Helper method to get current wellness goal value
+    private int getCurrentValue(WellnessGoals goals, int index) {
+        switch (index) {
+            case 0: return goals.getWaterIntake();
+            case 1: return goals.getSleepDuration();
+            case 2: return goals.getSelfCareTime();
+            case 3: return goals.getScreenTime();
+            default: return 0;
+        }
+    }
+
+    // Helper method to update wellness goal
+    private void updateWellnessGoal(WellnessGoals goals, int index, int value) {
+        switch (index) {
+            case 0: goals.setWaterIntake(value); break;
+            case 1: goals.setSleepDuration(value); break;
+            case 2: goals.setSelfCareTime(value); break;
+            case 3: goals.setScreenTime(value); break;
+        }
     }
 
     public void editOrDeleteActivities() {
@@ -256,5 +337,3 @@ class ActivityManager {
         scanner.nextLine();
     }
 }
-
-
