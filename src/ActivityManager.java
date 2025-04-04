@@ -107,18 +107,15 @@ class ActivityManager {
         WellnessGoals goals = healthTracker.getWellnessGoals();
         uiManager.displayPrompt("--- 🌈 Log Your Daily Wellness Goals ---\n");
 
-        // Display current values first
-        uiManager.displayText("Current Wellness Goals:");
-
 
         String[] goalNames = {"Water Intake", "Sleep Duration", "Self-Care Time", "Screen Time"};
         String[] goalIcons = {"💧", "😴", "🌿", "📱"};
         String[] goalUnits = {"glasses", "hours", "minutes", "hours"};
         String[] goalTips = {
-                "Health tip: Aim for 8 glasses (2L) of water daily for proper hydration",
-                "Health tip: 7-9 hours is recommended for adults for optimal rest",
-                "Health tip: Even 10-15 minutes of self-care daily can reduce stress",
-                "Health tip: Try to limit recreational screen time to 2 hours per day"
+                "\u001B[34mHealth tip: Aim for 8 glasses (2L) of water daily for proper hydration\u001B[0m",
+                "\u001B[34mHealth tip: 7-9 hours is recommended for adults for optimal rest\u001B[0m",
+                "\u001B[34mHealth tip: Even 10-15 minutes of self-care daily can reduce stress\u001B[0m",
+                "\u001B[34mHealth tip: Try to limit recreational screen time to 2 hours per day\u001B[0m"
         };
         int[] recommendedValues = {8, 8, 30, 2};
         int[] minValues = {0, 0, 0, 0};
@@ -145,6 +142,7 @@ class ActivityManager {
 
                 if (choice < 1 || choice > goalNames.length) {
                     uiManager.showErrorMessage("Invalid choice. Please try again.");
+                    waitForUserToContinue();
                     continue;
                 }
 
@@ -152,6 +150,7 @@ class ActivityManager {
                 uiManager.displayText(goalTips[index]);
                 uiManager.displayPrompt("Enter " + goalNames[index] + " (" + goalUnits[index] +
                         ", recommended: " + recommendedValues[index] + "): ");
+
 
                 String input = scanner.nextLine();
 
