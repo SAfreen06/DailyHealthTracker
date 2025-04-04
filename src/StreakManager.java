@@ -58,7 +58,7 @@ class StreakManager {
     }
 
     public Map<String, Streak> getAllStreaks() {
-        return streaks;
+        return Collections.unmodifiableMap(streaks);
     }
 
     public void addCategory(String category) {
