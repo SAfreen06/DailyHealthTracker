@@ -18,6 +18,7 @@ class GoalsManager {
             uiManager.displayText("2. 🧘 Set Meditation Goal (Minutes per Day)");
             uiManager.displayText("3. 🍎 Set Nutrition Goal (Calories per Day)");
             uiManager.displayText("4. 🔙 Return");
+            uiManager.displayPrompt("➤ Enter Your Choice: ");
 
             try {
                 int choice = Integer.parseInt(scanner.nextLine());

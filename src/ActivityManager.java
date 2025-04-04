@@ -218,25 +218,25 @@ class ActivityManager {
             String category;
             switch (categoryChoice) {
                 case 1: // Exercise
-                    uiManager.displayText("Calories Burnt per Session: ");
+                    uiManager.displayPrompt("Calories Burnt per Session: ");
                     int caloriesBurnt = Integer.parseInt(scanner.nextLine());
 
-                    uiManager.displayText("Exercise Duration (minutes): ");
+                    uiManager.displayPrompt("Exercise Duration (minutes): ");
                     int exerciseDuration = Integer.parseInt(scanner.nextLine());
 
                     return ActivityFactory.createExerciseActivity(name, description, caloriesBurnt, exerciseDuration);
 
                 case 2: // Meditation
-                    uiManager.displayText("Meditation Duration (minutes): ");
+                    uiManager.displayPrompt("Meditation Duration (minutes): ");
                     int meditationDuration = Integer.parseInt(scanner.nextLine());
 
                     return ActivityFactory.createMeditationActivity(name, description, meditationDuration);
 
                 case 3: // Nutrition
-                    uiManager.displayText("Calories Consumed: ");
+                    uiManager.displayPrompt("Calories Consumed: ");
                     int caloriesConsumed = Integer.parseInt(scanner.nextLine());
 
-                    uiManager.displayText("Number of Meals Logged: ");
+                    uiManager.displayPrompt("Number of Meals Logged: ");
                     int mealsLogged = Integer.parseInt(scanner.nextLine());
 
                     return ActivityFactory.createNutritionActivity(name, description, caloriesConsumed, mealsLogged);
