@@ -27,7 +27,7 @@ class CsvStreakStorage implements IStreakStorageSystem {
         File file = new File(filePath);
 
         if (!file.exists()) {
-            return loadedStreaks; 
+            return loadedStreaks;
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
