@@ -65,7 +65,7 @@ class StreakManager {
         File file = new File(STREAK_FILE);
 
         if (!file.exists()) {
-            return; 
+            return;
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
