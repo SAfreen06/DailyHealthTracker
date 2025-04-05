@@ -15,10 +15,13 @@ class StreakManager {
         defaultStreaks.put("Meditation", new Streak("Meditation"));
         defaultStreaks.put("Nutrition", new Streak("Nutrition"));
 
-
         this.streaks = storage.loadStreaks(defaultStreaks);
-    }
 
+
+        for (Streak streak : this.streaks.values()) {
+            streak.validateStreakValues();
+        }
+    }
 
     public StreakManager() {
         this(new CsvStreakStorage("streaks.csv"));
@@ -30,7 +33,6 @@ class StreakManager {
         storage.saveStreaks(streaks);
     }
 
-
     public void recordActivity(String category) {
         recordActivity(category, LocalDate.now());
     }
@@ -39,6 +41,7 @@ class StreakManager {
         LocalDate today = LocalDate.now();
         for (Streak streak : streaks.values()) {
             streak.checkStreakStatus(today);
+            streak.validateStreakValues(); // Additional validation to ensure streak integrity
         }
         storage.saveStreaks(streaks);
     }

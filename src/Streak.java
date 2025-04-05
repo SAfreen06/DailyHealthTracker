@@ -16,7 +16,7 @@ class Streak {
     public Streak(String category, int currentStreak, int bestStreak, LocalDate lastCompletedDate) {
         this.category = category;
         this.currentStreak = currentStreak;
-        this.bestStreak = bestStreak;
+        this.bestStreak = Math.max(currentStreak, bestStreak);  // Ensure best >= current
         this.lastCompletedDate = lastCompletedDate;
     }
 
@@ -36,11 +36,21 @@ class Streak {
         } else if (activityDate.isAfter(lastCompletedDate.plusDays(1))) {
             currentStreak = 1;
             lastCompletedDate = activityDate;
+            updateBestStreak();  // Added this line to fix the issue
         }
+
+        // Additional safeguard to ensure best streak is always >= current streak
+        validateStreakValues();
     }
 
     private void updateBestStreak() {
         if (currentStreak > bestStreak) {
+            bestStreak = currentStreak;
+        }
+    }
+
+    public void validateStreakValues() {
+        if (currentStreak > 0 && bestStreak < currentStreak) {
             bestStreak = currentStreak;
         }
     }
