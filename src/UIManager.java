@@ -48,12 +48,12 @@ class UIManager {
     }
 
     public void showSuccessMessage(String message) {
-        System.out.println(ANSI_GREEN + "✅ " + message + ANSI_RESET);
+        System.out.println(ANSI_GREEN  + message + ANSI_RESET);
         pause(1000);
     }
 
     public void showErrorMessage(String message) {
-        System.out.println(ANSI_RED + "❌ " + message + ANSI_RESET);
+        System.out.println(ANSI_RED + message + ANSI_RESET);
         pause(1000);
     }
 
