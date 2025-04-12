@@ -1,7 +1,5 @@
 import java.time.LocalDate;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 class HealthTracker {
@@ -12,42 +10,48 @@ class HealthTracker {
     private StreakManager streakManager;
     private StatisticsCalculator statsCalculator;
     private IActivityStorage activityStorage;
+    private IWellnessGoalsStorage wellnessGoalsStorage;
     private LocalDate currentDay;
 
     public HealthTracker() {
-        this(new CSVActivityStorage());
+        this(new CSVActivityStorage(), new CSVWellnessGoalsStorage());
     }
 
     public HealthTracker(IActivityStorage activityStorage) {
+        this(activityStorage, new CSVWellnessGoalsStorage());
+    }
+
+    public HealthTracker(IActivityStorage activityStorage, IWellnessGoalsStorage wellnessGoalsStorage) {
         this.activityStorage = activityStorage;
+        this.wellnessGoalsStorage = wellnessGoalsStorage;
         this.currentDay = LocalDate.now();
 
         this.allActivities = activityStorage.loadAllActivities();
 
-
         refreshTodayActivities();
 
-        wellnessGoals = new WellnessGoals();
+
+        this.wellnessGoals = wellnessGoalsStorage.loadWellnessGoalsForDate(currentDay);
         streakManager = new StreakManager();
         activityGoals = new ActivityGoals(45, 15, 1800); // Default goals
 
-        // Pass only today's activities to the stats calculator
+
         statsCalculator = new StatisticsCalculator(todayActivities);
 
         streakManager.checkAllStreaks();
     }
 
-    // Refresh today's activities list (for date change or after loading)
+
     private void refreshTodayActivities() {
         LocalDate today = LocalDate.now();
         if (!today.equals(currentDay)) {
             currentDay = today;
+            this.wellnessGoals = wellnessGoalsStorage.loadWellnessGoalsForDate(currentDay);
         }
 
         todayActivities = allActivities.stream()
                 .filter(activity -> activity.getDate().equals(currentDay))
                 .collect(Collectors.toList());
-
 
         if (statsCalculator != null) {
             statsCalculator.updateActivities(todayActivities);
@@ -57,18 +61,20 @@ class HealthTracker {
     public void addActivity(Activity activity) {
         allActivities.add(activity);
 
-
         if (activity.getDate().equals(currentDay)) {
             todayActivities.add(activity);
         }
 
-
         saveActivities();
     }
 
-
     private void saveActivities() {
         activityStorage.saveActivities(allActivities);
+    }
+
+
+    public void saveWellnessGoals() {
+        wellnessGoalsStorage.saveWellnessGoals(wellnessGoals, currentDay);
     }
 
     public void displayActivities() {
@@ -93,7 +99,6 @@ class HealthTracker {
             streakManager.recordActivity(activity.getCategory());
         }
 
-
         saveActivities();
         return true;
     }
@@ -103,7 +108,6 @@ class HealthTracker {
             Activity activityToRemove = todayActivities.get(index);
             todayActivities.remove(index);
             allActivities.remove(activityToRemove);
-
 
             saveActivities();
             return true;
@@ -172,30 +176,4 @@ class HealthTracker {
         formatter.displayCompleteStatistics();
     }
 
-    public void addStreakCategory(String category) {
-        streakManager.addCategory(category);
-    }
-
-    public boolean removeStreakCategory(String category) {
-        return streakManager.removeCategory(category);
-    }
-
-    public Map<String, Streak> getAllStreakCategories() {
-        return streakManager.getAllStreaks();
-    }
-
-    public int getCurrentStreak(String category) {
-        return streakManager.getCurrentStreak(category);
-    }
-
-    public int getBestStreak(String category) {
-        return streakManager.getBestStreak(category);
-    }
-
-    public void checkForDateChange() {
-        LocalDate today = LocalDate.now();
-        if (!today.equals(currentDay)) {
-            refreshTodayActivities();
-        }
-    }
 }

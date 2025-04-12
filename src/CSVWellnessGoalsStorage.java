@@ -20,11 +20,10 @@ public class CSVWellnessGoalsStorage implements IWellnessGoalsStorage {
     @Override
     public boolean saveWellnessGoals(WellnessGoals goals, LocalDate date) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename, true))) {
-            // Check if we need to update an existing entry or add a new one
             Map<LocalDate, WellnessGoals> allGoals = loadAllWellnessGoals();
             allGoals.put(date, goals);
 
-            // Clear the file and write all entries
+
             writer.close(); // Close to reopen in non-append mode
             try (PrintWriter clearWriter = new PrintWriter(new FileWriter(filename))) {
                 clearWriter.println("date,waterIntake,sleepDuration,selfCareTime,screenTime");
@@ -65,7 +64,7 @@ public class CSVWellnessGoalsStorage implements IWellnessGoalsStorage {
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            // Skip header line
+
             String line = reader.readLine();
 
             while ((line = reader.readLine()) != null) {
