@@ -16,4 +16,3 @@ class NutritionActivity extends Activity {
 
     public int getMealsLogged() { return mealsLogged; }
 }
-

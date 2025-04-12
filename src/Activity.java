@@ -1,6 +1,5 @@
 import java.time.LocalDate;
 
-
 abstract class Activity {
     protected String name;
     protected String description;
@@ -21,6 +20,7 @@ abstract class Activity {
     public void setName(String name) { this.name = name; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+    public LocalDate getDate() { return date; }
     public boolean isCompleted() { return completed; }
     public void complete() { this.completed = true; }
 }

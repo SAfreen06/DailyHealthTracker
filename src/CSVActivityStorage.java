@@ -10,21 +10,21 @@ public class CSVActivityStorage implements IActivityStorage {
     private final String filename;
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
 
-    public FileActivityStorage() {
+    public CSVActivityStorage() {
         this(DEFAULT_FILENAME);
     }
 
-    public FileActivityStorage(String filename) {
+    public CSVActivityStorage(String filename) {
         this.filename = filename;
     }
 
     @Override
     public boolean saveActivities(List<Activity> activities) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
-            // Write header
+
             writer.println("type,name,description,date,completed,param1,param2");
 
-            // Write each activity
+
             for (Activity activity : activities) {
                 String type = activity.getClass().getSimpleName();
                 String name = escape(activity.getName());
@@ -63,11 +63,11 @@ public class CSVActivityStorage implements IActivityStorage {
         File file = new File(filename);
 
         if (!file.exists()) {
-            return activities; // Return empty list if file doesn't exist yet
+            return activities;
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            // Skip header
+
             String line = reader.readLine();
 
             while ((line = reader.readLine()) != null) {
@@ -116,10 +116,10 @@ public class CSVActivityStorage implements IActivityStorage {
                     activity = ActivityFactory.createNutritionActivity(name, description, param1, param2);
                     break;
                 default:
-                    return null; // Skip unknown types
+                    return null;
             }
 
-            // Set date and completion status
+
             if (activity != null) {
                 activity.date = date;
                 if (completed) {
@@ -128,13 +128,13 @@ public class CSVActivityStorage implements IActivityStorage {
                 return activity;
             }
         } catch (Exception e) {
-            // Skip line if there's an error parsing it
+
             System.err.println("Error parsing activity: " + e.getMessage());
         }
         return null;
     }
 
-    // Helper methods to handle commas in text fields
+
     private String escape(String text) {
         return text.replace(",", "\\,");
     }

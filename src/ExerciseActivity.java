@@ -15,4 +15,8 @@ class ExerciseActivity extends Activity {
     public int getProgress() { return durationMinutes; }
 
     public int getCaloriesBurnt() { return caloriesBurnt; }
+
+    public int getDuration() {
+        return durationMinutes;
+    }
 }
