@@ -108,6 +108,7 @@ class ActivityManager {
         uiManager.displayPrompt("--- 🌈 Log Your Daily Wellness Goals ---\n");
 
         boolean continueLogging = true;
+        boolean madeChanges = false;
 
         while (continueLogging) {
             uiManager.displayPrompt("Select a wellness goal to update:\n");
@@ -144,17 +145,15 @@ class ActivityManager {
                 try {
                     int value = Integer.parseInt(input);
 
-
                     if (!goals.isValidGoalValue(index, value)) {
                         uiManager.showErrorMessage("Value must be between " + goals.getMinValue(index) +
                                 " and " + goals.getMaxValue(index) + ". Please try again.");
                         continue;
                     }
 
-
                     goals.updateGoalValue(index, value);
+                    madeChanges = true;
                     String feedback = goals.getProgressFeedback(index, value);
-
 
                     if (feedback.contains("Great") || feedback.contains("Excellent") || feedback.contains("Good")) {
                         uiManager.showSuccessMessage(feedback);
@@ -168,6 +167,11 @@ class ActivityManager {
             } catch (NumberFormatException e) {
                 uiManager.showErrorMessage("Please enter a valid number.");
             }
+        }
+
+    
+        if (madeChanges) {
+            healthTracker.saveWellnessGoals();
         }
 
         uiManager.showSuccessMessage("Wellness goals updated successfully!");
