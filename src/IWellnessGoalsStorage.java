@@ -7,6 +7,6 @@ public interface IWellnessGoalsStorage {
 
 
     WellnessGoals loadWellnessGoalsForDate(LocalDate date);
-    
+
     Map<LocalDate, WellnessGoals> loadAllWellnessGoals();
 }
