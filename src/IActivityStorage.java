@@ -4,7 +4,7 @@ import java.util.List;
 public interface IActivityStorage {
 
     boolean saveActivities(List<Activity> activities);
-    
+
     List<Activity> loadAllActivities();
 
     List<Activity> loadActivitiesForDate(LocalDate date);
