@@ -169,7 +169,7 @@ class ActivityManager {
             }
         }
 
-    
+
         if (madeChanges) {
             healthTracker.saveWellnessGoals();
         }

@@ -29,50 +29,50 @@ class StatisticsDisplayFormatter {
 
     private void displayActivityProgress() {
         System.out.println("\n📌\u001B[33m**Physical & Mental Activity Progress**\u001B[0m");
-        System.out.println("-------------------------------------------------------------");
-        System.out.println("| Category      | Goal                  | Achieved |  Progress   ");
-        System.out.println("-------------------------------------------------------------");
+        System.out.println("+-----------------+----------------------+----------------+------------+");
+        System.out.println("| Category        | Goal                 | Achieved       | Progress   |");
+        System.out.println("+-----------------+----------------------+----------------+------------+");
 
         // Exercise progress
         int exerciseGoal = activityGoals.getExerciseGoal();
         int exerciseProgress = statsCalculator.calculateCategoryProgress("Exercise");
-        System.out.printf("| 🏋️ Exercise  | %d min/day            | %d min           | %d%%  | \n",
+        System.out.printf("| 🏋️ Exercise     | %d min/day            | %d min         | %3d%%       |\n",
                 exerciseGoal, exerciseProgress, calculatePercentage(exerciseProgress, exerciseGoal));
 
         // Meditation progress
         int meditationGoal = activityGoals.getMeditationGoal();
         int meditationProgress = statsCalculator.calculateCategoryProgress("Meditation");
-        System.out.printf("| 🧘 Meditation | %d min/day            |  %d min            |  %d%%  | \n",
+        System.out.printf("| 🧘 Meditation    | %d min/day            | %d min         | %3d%%       |\n",
                 meditationGoal, meditationProgress, calculatePercentage(meditationProgress, meditationGoal));
 
         // Nutrition progress
         int nutritionGoal = activityGoals.getNutritionGoal();
         int nutritionProgress = statsCalculator.calculateCategoryProgress("Nutrition");
-        System.out.printf("| 🍽️ Nutrition | %d kcal/day         |   %d kcal           |  %d%%  | \n",
+        System.out.printf("| 🍽️ Nutrition     | %d kcal/day          | %d kcal        | %3d%%       |\n",
                 nutritionGoal, nutritionProgress, calculatePercentage(nutritionProgress, nutritionGoal));
 
-        System.out.println("-------------------------------------------------------------");
+        System.out.println("+-----------------+----------------------+----------------+------------+");
     }
 
     private void displayWellnessGoalsProgress() {
         System.out.println("\n📌\u001B[33m**Daily Wellness Goals Progress**\u001B[0m");
-        System.out.println("-------------------------------------------------------------");
-        System.out.println("| Wellness Goal     | Goal                  | Achieved     |Progress   | ");
-        System.out.println("-------------------------------------------------------------");
+        System.out.println("+-----------------+----------------------+----------------+------------+");
+        System.out.println("| Wellness Goal   | Goal                 | Achieved       | Progress   |");
+        System.out.println("+-----------------+----------------------+----------------+------------+");
 
-        System.out.printf("| 💧 Water Intake   | 8 glasses/day         | %d glasses  |  %d%%  |  \n",
-                wellnessGoals.getWaterIntake(), calculatePercentage(wellnessGoals.getWaterIntake(), 8));
+        System.out.printf("| 💧 Water Intake  | %d glasses/day        | %d glasses     | %3d%%       |\n",
+                8, wellnessGoals.getWaterIntake(), calculatePercentage(wellnessGoals.getWaterIntake(), 8));
 
-        System.out.printf("| 😴 Sleep Duration | 8 hours/night         | %d hours            |  %d%%  |\n",
-                wellnessGoals.getSleepDuration(), calculatePercentage(wellnessGoals.getSleepDuration(), 8));
+        System.out.printf("| 😴 Sleep Duration| %d hours/night        | %d hours       | %3d%%       |\n",
+                8, wellnessGoals.getSleepDuration(), calculatePercentage(wellnessGoals.getSleepDuration(), 8));
 
-        System.out.printf("| 🌿 Self Care      | 30 min/day            | %d min            |  %d%%  |\n",
-                wellnessGoals.getSelfCareTime(), calculatePercentage(wellnessGoals.getSelfCareTime(), 30));
+        System.out.printf("| 🌿 Self Care     | %d min/day           | %d min         | %3d%%       |\n",
+                30, wellnessGoals.getSelfCareTime(), calculatePercentage(wellnessGoals.getSelfCareTime(), 30));
 
-        System.out.printf("| 📱 Screen Time    | 2 hours max/day       | %d hours              | %s  | \n",
-                wellnessGoals.getScreenTime(), screenTimeCalculation(wellnessGoals.getScreenTime(), 2));
+        System.out.printf("| 📱 Screen Time   | %d hours max/day      | %d hours       | %-12s |\n",
+                2, wellnessGoals.getScreenTime(), screenTimeCalculation(wellnessGoals.getScreenTime(), 2));
 
-        System.out.println("-------------------------------------------------------------");
+        System.out.println("+-----------------+----------------------+----------------+------------+");
     }
 
     private void displayStreaksAndStats() {
@@ -103,14 +103,11 @@ class StatisticsDisplayFormatter {
     }
 
     private String screenTimeCalculation(int value, int total) {
-        String message;
         if (value > total) {
-            message=value-total+" hour over limit";
+            return (value - total) + "h over limit";
         }
-        else
-        {
-            message="Within limit";
+        else {
+            return "Within limit";
         }
-        return message;
     }
 }
