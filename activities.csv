@@ -1,0 +1,4 @@
+type,name,description,date,completed,param1,param2
+ExerciseActivity,push ups,doing 3 sets,2025-04-12,true,200,20
+MeditationActivity,Deep breath,mindfulness,2025-04-12,true,15,0
+ExerciseActivity,running,abc,2025-04-12,false,300,40
