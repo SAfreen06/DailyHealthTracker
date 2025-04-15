@@ -164,16 +164,33 @@ class HealthTracker {
         activityGoals.setNutritionGoal(goal);
     }
 
-    public void displayDailyStatistics() {
-        refreshTodayActivities();
 
-        StatisticsDisplayFormatter formatter = new StatisticsDisplayFormatter(
+    public void displayActivityProgress() {
+        refreshTodayActivities();
+        StatisticsDisplayFormatter formatter = createStatsFormatter();
+        formatter.displayActivityProgress();
+    }
+
+    public void displayWellnessGoalsProgress() {
+        refreshTodayActivities();
+        StatisticsDisplayFormatter formatter = createStatsFormatter();
+        formatter.displayWellnessGoalsProgress();
+    }
+
+    public void displayStreaksInfo() {
+        refreshTodayActivities();
+        StatisticsDisplayFormatter formatter = createStatsFormatter();
+        formatter.displayStreaksAndStats();
+    }
+
+
+    private StatisticsDisplayFormatter createStatsFormatter() {
+        return new StatisticsDisplayFormatter(
                 wellnessGoals,
                 activityGoals,
                 streakManager,
                 statsCalculator
         );
-        formatter.displayCompleteStatistics();
     }
 
 }
